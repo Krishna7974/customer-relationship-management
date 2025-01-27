@@ -1,0 +1,16 @@
+.sidebar{
+     width: 280px;
+     height: 100vh;
+     background-color: rgb(29, 29, 29);
+     position: fixed;
+}
+.sidebar .nav-link{
+    color: white;
+}
+.sidebar .nav-link:hover{
+    background-color: rgb(50, 50, 50);
+}
+.container{
+     width:auto;
+     margin-left:280px ;
+}

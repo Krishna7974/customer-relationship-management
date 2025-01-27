@@ -1,0 +1,59 @@
+<header th:fragment="main-header">
+    <nav class="navbar navbar-expand-lg bg-primary">
+        <div class="container">
+            <img
+                    src="/images/spring.png"
+                    alt="Spring logo"
+                    width="50"
+                    class="rounded-circle"
+            />
+            <a class="navbar-brand text-white" href="/index"
+            ><span class="h4 ms-4">Spring Programming</span></a
+            >
+            <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a
+                                class="nav-link text-white"
+                                aria-current="page"
+                                href="/index"
+                        >Home</a
+                        >
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a
+                                class="nav-link dropdown-toggle text-white"
+                                href="index.html"
+                                role="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                        >
+                            More
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Online Batches</a></li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li><a class="dropdown-item" href="#">About Us</a></li>
+                            <li>
+                                <a class="dropdown-item" href="#">Contact Us</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <a href="/login" class="btn btn-info ms-3">Login</a>
+                <a href="/register" class="btn btn-info ms-3">Register</a>
+            </div>
+        </div>
+    </nav>
+</header>

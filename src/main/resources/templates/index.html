@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Home</title>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+            crossorigin="anonymous"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+</head>
+<body>
+<!-- Header starts-->
+<div th:if="${sessionUser == null Or sessionUser == ''}">
+    <div th:replace="~{fragments/main-header :: main-header}"></div>
+</div>
+<div th:unless="${sessionUser == null OR sessionUser == ''}">
+    <div th:replace="~{fragments/user-header::u-header}"></div>
+</div>
+
+<!-- Header ends-->
+
+<!-- Main starts-->
+<main class="container-fluid">
+    <!-- Banner-->
+    <section>
+        <img width="100%" src="images/banner.jpg" alt="banner"/>
+    </section>
+
+    <!-- Course-->
+    <section class="container py-5">
+        <h3 class="text-center">Courses</h3>
+
+        <!-- Cards Container-->
+        <div class="row py-4 g-5">
+            <!-- Card One Start      th:each="i : ${#numbers.sequence(1,10)}"       -->
+
+            <div th:each="course : ${allCourseList}" class="col-lg-3 col-md-6">
+                <div class="card" style="width: 18rem; height: 30rem;">
+                    <img
+                            class="card-img-top"
+                            th:src="@{${course.imageUrl}}"
+                            alt="Course Img"
+                            style="height: 10rem; object-fit: cover;"
+                    />
+                    <div class="card-body" style="overflow-y: auto; height: 15rem;">
+                        <h5 class="card-title"><span th:text="${course.name}"></span></h5>
+                        <p class="card-text">
+                            <span th:text="${course.description}"></span>
+                        </p>
+                    </div>
+                    <span class="card-footer text-muted">
+                        <pre><Strong>Price: </Strong>₹<del><span th:text="${course.originalPrice}"></span></del> ₹<span
+                                th:text="${course.discountedPrice}"></span>/-</pre>
+                        <div th:if="${sessionUser == null OR sessionUser == ''}">
+                            <a href="login" class="btn btn-outline-primary mb-2">Login to Buy</a>
+                        </div>
+                        <div th:unless="${sessionUser == null OR sessionUser == ''}">
+                            <div th:if="${#lists.contains(purchasedCoursesNameList,course.name)}">
+                                <span class="text-success">Course already purchased.</span>
+                            </div>
+                            <div th:unless="${#lists.contains(purchasedCoursesNameList,course.name)}">
+                                <button class="btn btn-primary mb-2"
+                                        th:data-cname="${course.name}"
+                                        th:data-camount="${course.discountedPrice}"
+                                        th:data-uname="${sessionUser.name}"
+                                        th:data-uemail="${sessionUser.email}"
+                                        th:data-uphoneno="${sessionUser.phoneno}"
+
+                                        onclick="purchaseCourse(this.getAttribute('data-cname'),this.getAttribute('data-camount'),this.getAttribute('data-uname'),this.getAttribute('data-uemail'),this.getAttribute('data-uphoneno'))"
+                                >Buy
+                                </button>
+                            </div>
+                        </div>
+                        <span></span>Updated: <span th:text="${course.updatedOn}"></span></span>
+                </div>
+            </div>
+        </div>
+        <!-- Card One ends-->
+        </div>
+    </section>
+</main>
+<!-- Main ends-->
+
+<!-- footer starts-->
+<div th:replace="~{fragments/crm-footer :: footer}"></div>
+<!-- footer ends-->
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"
+></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+    function purchaseCourse(cName,cAmount,uName,uEmail,uPhoneno) {
+      var options = {
+        key: "rzp_test_4FQSRT6mvPVmRX",
+        amount: cAmount*100,
+        currency: "INR",
+        name: "Krishna Patidar",
+        description: "Test Transaction",
+        image:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtD2tx6fdVGdcsLCK6YRqPfeRNN887syfylA&s",
+        handler: function (response) {
+          console.log(response);
+          alert("Payment Successful");
+
+          var date=new Date();
+          var dateOfPurchasedCourse=date.toLocaleDateString('en-GB')+", "+date.toLocaleTimeString('en-GB', {hour12 : true});
+          var requestData={
+                 courseName:cName,
+                 courseAmount:cAmount,
+                 userEmail:uEmail,
+                 dateOfPurchase:dateOfPurchasedCourse,
+                 paymentId:response.razorpay_payment_id
+          };
+
+          $.ajax({
+            type:"POST",
+            url:"/api/storeOrderDetails",
+            contentType:"application/json",
+            data:JSON.stringify(requestData),
+            success:function(response){
+                console.log("data stored successfully");
+                alert("Congratulations, and Thanks for purchasing our Course");
+                window.location.href="myCourses";
+            },
+            error:function(error){
+                console.log("Error "+error);
+                alert("Some error Occured "+error);
+            }
+          });
+        },
+        prefill: {
+          name: uName,
+          email: uEmail,
+          contact: uPhoneno,
+        },
+        notes: {
+          address: cName,
+        },
+        theme: {
+          color: "#3399cc",
+        },
+      };
+      var rzp1 = new Razorpay(options);
+      rzp1.on("payment.failed", function (response) {
+        console.log(response);
+        alert("Error :" + response);
+      });
+      rzp1.open();
+    }
+</script>
+</body>
+</html>

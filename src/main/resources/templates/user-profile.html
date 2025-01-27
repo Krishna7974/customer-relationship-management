@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Profile</title>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+            crossorigin="anonymous"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+</head>
+<body>
+<!-- Header starts-->
+    <div th:replace="~{fragments/user-header::u-header}"></div>
+<!-- Header ends-->
+
+<!-- Main starts-->
+<main class="container-fluid" style="min-height: 565px">
+    <section class="container py-5">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card shadow" style="width: 18rem">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <i
+                                    class="bi bi-person-circle me-1"
+                                    style="font-size: 9rem"
+                            ></i>
+                            <h2 th:text="${sessionUser.name}"></h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <h3 class="mb-4">User Details</h3>
+                            <table class="table table-striped table-hover table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td>Name</td>
+                                    <td th:text="${sessionUser.name}"></td>
+                                </tr>
+                                <tr>
+                                    <td>Email</td>
+                                    <td th:text="${sessionUser.email}"></td>
+                                </tr>
+                                <tr>
+                                    <td>Phone No.</td>
+                                    <td th:text="${sessionUser.phoneno}"></td>
+                                </tr>
+                                <tr>
+                                    <td>City</td>
+                                    <td th:text="${sessionUser.city}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<!-- Main ends-->
+
+<!-- footer starts-->
+<div th:replace="~{fragments/crm-footer :: footer}"></div>
+<!-- footer ends-->
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"
+></script>
+</body>
+</html>
