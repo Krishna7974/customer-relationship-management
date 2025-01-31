@@ -23,7 +23,7 @@ import java.nio.file.Paths;
 public class CourseController {
 
     private String UPLOAD_DIR="src/main/resources/static/uploads/";
-    private String IMAGE_URL="http://localhost:8080/uploads/";
+    private String IMAGE_URL="https://customer-relationship-management-l91f.onrender.com/uploads/";
 
     @Autowired
     private CourseService courseService;
