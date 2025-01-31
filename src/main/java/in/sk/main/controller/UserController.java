@@ -9,6 +9,7 @@ import in.sk.main.services.OrdersService;
 import in.sk.main.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,7 +35,8 @@ public class UserController {
     @Autowired
     private OrdersService ordersService;
 
-
+    @Value("${razorpay.key}")
+    private String razorpayKey;
 
     @GetMapping({"/","/index"})
     public String openHomePage(Model model, @SessionAttribute(value = "sessionUser" ,required = false) User sessionUser){
@@ -47,6 +49,7 @@ public class UserController {
             for(Object[] course:list) {
                 purchasedCoursesNameList.add((String) course[2]);
             }
+            model.addAttribute("razorpayKey",razorpayKey);
             model.addAttribute("purchasedCoursesNameList",purchasedCoursesNameList);
         }
         return "index";

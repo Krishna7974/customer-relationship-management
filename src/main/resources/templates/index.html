@@ -72,8 +72,8 @@
                                         th:data-uname="${sessionUser.name}"
                                         th:data-uemail="${sessionUser.email}"
                                         th:data-uphoneno="${sessionUser.phoneno}"
-
-                                        onclick="purchaseCourse(this.getAttribute('data-cname'),this.getAttribute('data-camount'),this.getAttribute('data-uname'),this.getAttribute('data-uemail'),this.getAttribute('data-uphoneno'))"
+                                        th:data-razorPay="${razorpayKey}"
+                                        onclick="purchaseCourse(this.getAttribute('data-cname'),this.getAttribute('data-camount'),this.getAttribute('data-uname'),this.getAttribute('data-uemail'),this.getAttribute('data-uphoneno'),this.getAttribute('data-razorPay'))"
                                 >Buy
                                 </button>
                             </div>
@@ -99,9 +99,9 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
-    function purchaseCourse(cName,cAmount,uName,uEmail,uPhoneno) {
+    function purchaseCourse(cName,cAmount,uName,uEmail,uPhoneno,razorPayKey) {
       var options = {
-        key: "rzp_test_4FQSRT6mvPVmRX",
+        key: razorPayKey,
         amount: cAmount*100,
         currency: "INR",
         name: "Krishna Patidar",
